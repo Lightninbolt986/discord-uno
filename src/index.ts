@@ -82,7 +82,7 @@ export class DiscordUNO {
         const Embed = new MessageEmbed()
             .setColor(this.embedColor)
             .setAuthor(`${message.author.tag} created an UNO! game! You can now join the game!`, message.author.displayAvatarURL({ format: "png" }));
-        return message.channel.send("", { embed: Embed });
+        return message.channel.send({ embeds: [Embed] });
     };
 
     /**
@@ -118,7 +118,7 @@ export class DiscordUNO {
                     .setColor(this.embedColor)
                     .setAuthor(userOb.username, userOb.displayAvatarURL({ format: "png" }));
                 try {
-                    const m = await userOb.send("", { embed: Embed });
+                    const m = await userOb.send({ embeds: [Embed] });
                     user.DM = { channelId: m.channel.id, messageId: m.id };
                 } catch (err) {
                     BadUsers.push(userOb.id);
@@ -130,14 +130,14 @@ export class DiscordUNO {
                     .setAuthor("Turn DM's On!", message.client.user.displayAvatarURL({ format: "png" }))
                     .setDescription(`${BadUsers.map(u => message.client.users.cache.get(u)).join(", ")} please turn your DM's on if you want to view your cards!`)
                     .setColor(this.embedColor);
-                message.channel.send("", { embed: BadEmbed });
+                message.channel.send({ embeds: [BadEmbed] });
             }
 
             const Embed = new MessageEmbed()
                 .setColor(this.embedColor)
                 .setDescription(`**Top Card:** ${foundGame.topCard.name}`)
                 .setFooter(`Current Player: ${(<User>message.client.users.cache.get(foundGame.users[foundGame.currentPlayer].id)).tag}`);
-            return message.channel.send("", { embed: Embed });
+            return message.channel.send({ embeds: [Embed] });
         }
         this.storage.set(message.channel.id, foundGame);
 
@@ -158,7 +158,7 @@ export class DiscordUNO {
 
         const filter = (reaction: MessageReaction, user: User) => user.id === message.author.id && ["✅", "❌"].includes(reaction.emoji.name);
 
-        const response = await msg.awaitReactions(filter, { max: 1 });
+        const response = await msg.awaitReactions({ filter: filter, max: 1 });
         if (response.size > 0) {
             const reaction = response.first();
             if (reaction.emoji.name === "✅") {
@@ -192,7 +192,7 @@ export class DiscordUNO {
                 .setAuthor(message.author.username, message.author.displayAvatarURL({ format: "png" }));
             try {
 
-                const m = await message.author.send("", { embed: Embed });
+                const m = await message.author.send({ embeds: [Embed] });
                 message.channel.send(`${message.author}, check your DMs!`);
 
                 user.DM = {
@@ -207,7 +207,7 @@ export class DiscordUNO {
                     .setAuthor(message.author.username, message.author.displayAvatarURL({ format: "png" }))
                     .setColor(this.embedColor)
                     .setDescription("You need to have DM's enabled on this server for me to be able to DM you your cards!");
-                return message.channel.send("", { embed: BadEmbed });
+                return message.channel.send({ embeds: [BadEmbed] });
             }
 
         } else {
@@ -220,7 +220,7 @@ export class DiscordUNO {
             const authorMsg = authorChannel.messages.cache.get(foundGame.users.find(u => u.id === message.author.id).DM.messageId);
 
             message.channel.send(`${message.author}, check your DMs!`);
-            return authorMsg.edit("", { embed: Embed });
+            return authorMsg.edit({ embeds: [Embed] });
         }
     }
 
@@ -249,7 +249,7 @@ export class DiscordUNO {
                 .setColor(this.embedColor)
                 .setAuthor(userOb.username, userOb.displayAvatarURL({ format: "png" }));
             try {
-                const m = await userOb.send("", { embed: Embed });
+                const m = await userOb.send({ embeds: [Embed] });
                 user.DM = { channelId: m.channel.id, messageId: m.id };
             } catch (err) {
                 BadUsers.push(userOb.id);
@@ -261,14 +261,14 @@ export class DiscordUNO {
                 .setAuthor("Turn DM's On!", message.client.user.displayAvatarURL({ format: "png" }))
                 .setDescription(`${BadUsers.map(u => message.client.users.cache.get(u)).join(", ")} please turn your DM's on if you want to view your cards!`)
                 .setColor(this.embedColor);
-            message.channel.send("", { embed: BadEmbed });
+            message.channel.send({ embeds: [BadEmbed] });
         }
 
         const Embed = new MessageEmbed()
             .setColor(this.embedColor)
             .setDescription(`**Top Card:** ${foundGame.topCard.name}`)
             .setFooter(`Current Player: ${(<User>message.client.users.cache.get(foundGame.users[foundGame.currentPlayer].id)).tag}`);
-        return message.channel.send("", { embed: Embed });
+        return message.channel.send({ embeds: [Embed] });
     }
     /**
      * To play a card in your hand, call the playCard() method. This method accepts one parameter, which is the message object. This method will handle playing the card called. On success, it will remove the card from their hand and replace the top card. On fail it will return.
@@ -320,7 +320,7 @@ export class DiscordUNO {
                 .setDescription(`${message.client.users.cache.get(foundGame.users[lastPlayer].id).tag} played a ${cardObject.name}. It is now ${message.client.users.cache.get(foundGame.users[foundGame.currentPlayer].id).tag}'s turn.`)
                 .setColor(this.embedColor)
                 .setAuthor(message.client.users.cache.get(foundGame.users[foundGame.currentPlayer].id).username, message.client.users.cache.get(foundGame.users[foundGame.currentPlayer].id).displayAvatarURL({ format: "png" }));
-            if (foundGame.users[lastPlayer].hand.length >= 1) message.channel.send("", { embed: Embed });
+            if (foundGame.users[lastPlayer].hand.length >= 1) message.channel.send({ embeds: [Embed] });
         }
         let gameLength = foundGame.users.length;
         for (let i = 0; i < gameLength; i++) {
@@ -335,7 +335,7 @@ export class DiscordUNO {
                     .setAuthor(message.author.username, message.author.displayAvatarURL({ format: "png" }))
                     .setColor(this.embedColor)
                     .setDescription(`${message.author} went out with 0 cards! It is now ${message.client.users.cache.get(foundGame.users[foundGame.currentPlayer].id).tag}'s turn!`);
-                if (foundGame.users.length > 1) return message.channel.send("", { embed: Embed });
+                if (foundGame.users.length > 1) return message.channel.send({ embeds: [Embed] });
                 else {
                     winners.push({ id: foundGame.users[i].id });
                     this.winners.set(message.channel.id, winners);
@@ -345,7 +345,7 @@ export class DiscordUNO {
                         .attachFiles([attach])
                         .setImage(`attachment://Winners.png`)
                         .setDescription(`${message.author} went out with 0 cards! There was only one person left in the game so scores have been calculated!`)
-                    return message.channel.send("", { embed: Embed });
+                    return message.channel.send({ embeds: [Embed] });
 
                 }
             }
@@ -358,7 +358,7 @@ export class DiscordUNO {
             .setColor(this.embedColor)
             .setAuthor(message.author.username, message.author.displayAvatarURL({ format: "png" }))
             .setDescription(`Your new hand has ${foundGame.users[lastPlayer].hand.length} cards.\n${foundGame.users[lastPlayer].hand.map(crd => crd.name).join(" | ")}`);
-        return msg.edit("", { embed: Embed });
+        return msg.edit({ embeds: [Embed] });
     }
     /**
      * To view the current state of the game, call the viewTable() method. This method has one parameter, which is the Message object. This method will handle creating and sending an image to the channel with all the current information of the game. Including rotation, whos turn it is, how many cards each user has, whos in the game, and the top card of the pile.
@@ -503,7 +503,8 @@ export class DiscordUNO {
         const WIDTH = ctx.measureText('Turn: ').width
         ctx.fillText(`${message.guild.members.cache.get(foundGame.users[foundGame.currentPlayer].id).user.username}`, WIDTH + 105 + 10, canvas.height - 50)
 
-        return message.channel.send("Current Game State", {
+        return message.channel.send({
+            content: "Current Game State",
             files: [
                 new MessageAttachment(canvas.toBuffer("image/png")),
             ]
@@ -581,7 +582,7 @@ export class DiscordUNO {
                     const msg = channel.messages.cache.get(foundGame.users.find(u => u.id === user.id).DM.messageId);
                     msg.channel.send(`${user}`).then(m => m.delete());
                     Embed.setDescription(`Looks like you were called out on 1 card left! You drew 2 cards. Your new hand has ${playerData.hand.length} cards.\n\n${playerData.hand.map(c => c.name).join(" | ")}`);
-                    msg.edit("", { embed: Embed });
+                    msg.edit({ embeds: [Embed] });
                     return message.channel.send(`${user.tag} was called out by ${message.author.tag} on 1 card left! They drew 2 more cards.`);
                 } else {
                     newCards.forEach(c => authorData.hand.push(c));
@@ -590,7 +591,7 @@ export class DiscordUNO {
                     const msg = channel.messages.cache.get(foundGame.users.find(u => u.id === user.id).DM.messageId);
                     msg.channel.send(`${user}`).then(m => m.delete());
                     Embed.setDescription(`Oops! Looks like that person didn't have 1 card left! You drew 2 cards. Your new hand has ${authorData.hand.length} cards.\n\n${authorData.hand.map(c => c.name).join(" | ")}`);
-                    msg.edit("", { embed: Embed });
+                    msg.edit({ embeds: [Embed] });
                     return message.channel.send(`OOPS! Looks like that person didn't have 1 card left! ${message.author.tag} drew 2 cards!`);
                 }
             }
@@ -609,7 +610,8 @@ export class DiscordUNO {
 
         const standings = await this.displayWinners(message, foundWinners);
 
-        return message.channel.send("Here are the current UNO! Game standings!", {
+        return message.channel.send({
+            content: "Here are the current UNO! Game standings!",
             files: [
                 new MessageAttachment(standings),
             ]
@@ -663,9 +665,9 @@ export class DiscordUNO {
 
         const DrawEmbed = new MessageEmbed()
             .setColor(this.embedColor)
-            .setDescription(`${message.author}, you drew 1 card! Check your DM's for your new hand.${!condition ? ` ${message.author.username} couldn't play a card. It is now ${message.client.users.cache.get(foundGame.users[this.nextTurn(foundGame.currentPlayer, "normal", foundSettings, foundGame)].id).username}'s turn.` : ""}`)
+            .setDescription(`${message.author}, you drew 1 card! Check your DM's for your new hand.${!condition ? ` ${message.author.username} couldn't play a card. It is now ${message.client.users.cache.get(foundGame.users[this.nextTurn(foundGame.currentPlayer, "normal", foundSettings, foundGame)].id).username}'s turn.` : " "}`)
             .setAuthor(!condition ? nextUser.username : author.username, !condition ? nextUser.displayAvatarURL({ format: "png" }) : author.displayAvatarURL({ format: "png" }));
-        message.channel.send("", { embed: DrawEmbed });
+        message.channel.send({ embeds: [DrawEmbed] });
 
         if (!condition) foundGame.currentPlayer = this.nextTurn(foundGame.currentPlayer, "normal", foundSettings, foundGame);
 
@@ -680,7 +682,7 @@ export class DiscordUNO {
             .setColor(this.embedColor)
             .setAuthor(message.author.username, message.author.displayAvatarURL({ format: "png" }))
             .setDescription(`You drew 1 card. Your new hand has ${foundGame.users.find(u => u.id === message.author.id).hand.length} cards.\n\n${foundGame.users.find(u => u.id === message.author.id).hand.map(c => c.name).join(" | ")}`)
-        return msg.edit("", { embed: Embed });
+        return msg.edit({ embeds: [Embed] });
     }
 
     /**
@@ -713,7 +715,7 @@ export class DiscordUNO {
             .setDescription(`1️⃣ - **Jump Ins:** ${foundSettings.jumpIns ? "On" : "Off"}\n2️⃣ - **Seven Swap:** ${foundSettings.seven ? "On" : "Off"}\n3️⃣ - **Wild Challenging:** ${foundSettings.wildChallenge ? "On" : "Off"}\n4️⃣ - **Zero Rotation:** ${foundSettings.zero ? "On" : "Off"}\n\n✅ - Confirm\n❌ - Cancel`)
             .setColor(this.embedColor)
             .setAuthor(message.author.username, message.author.displayAvatarURL({ format: "png" }));
-        const react = await message.channel.send("", { embed: Embed });
+        const react = await message.channel.send({ embeds: [Embed] });
 
         const emojis = ["1️⃣", "2️⃣", "3️⃣", "4️⃣", "✅", "❌"];
 
@@ -721,7 +723,7 @@ export class DiscordUNO {
 
         const filter = (reaction: MessageReaction, user: User) => emojis.includes(reaction.emoji.name) && message.author.id === user.id;
 
-        const collector = react.createReactionCollector(filter);
+        const collector = react.createReactionCollector({ filter: filter });
 
         collector.on("collect", (reaction, user) => {
             switch (reaction.emoji.name) {
@@ -746,11 +748,11 @@ export class DiscordUNO {
                         wildChallenge,
                         zero,
                     });
-                    react.edit(`Successfully updated UNO! settings for **${(<TextChannel>message.channel).name}**`, { embed: null });
+                    react.edit({ content: `Successfully updated UNO! settings for **${(<TextChannel>message.channel).name}**`, embeds: null });
                     react.reactions.removeAll().catch(err => "");
                     return collector.stop();
                 case "❌":
-                    react.edit("Cancelled.", { embed: null });
+                    react.edit({ content: "Cancelled.", embeds: null });
                     react.reactions.removeAll().catch(err => "");
                     return collector.stop("Cancelled");
             }
@@ -759,7 +761,7 @@ export class DiscordUNO {
 
 
             // Embed.setDescription(`1️⃣ - **Jump Ins:** ${foundSettings.jumpIns ? "On" : "Off"}\n2️⃣ - **Seven Swap:** ${foundSettings.seven ? "On" : "Off"}\n3️⃣ - **Wild Challenging:** ${foundSettings.wildChallenge ? "On" : "Off"}\n4️⃣ - **Zero Rotation:** ${foundSettings.zero ? "On" : "Off"}\n\n✅ - Confirm\n❌ - Cancel`)
-            react.edit("", { embed: Embed });
+            react.edit({ embeds: [Embed] });
             reaction.users.remove(user.id).catch(err => "");
         });
     }
@@ -825,7 +827,7 @@ export class DiscordUNO {
             await Promise.all([msg.react("🔴"), msg.react("🟢"), msg.react("🔵"), msg.react("🟡"),])
 
 
-            const collected = await msg.awaitReactions(filter, { max: 1, time: 30000 });
+            const collected = await msg.awaitReactions({ filter: filter, max: 1, time: 30000 });
             const reaction = collected.first();
             if (reaction !== undefined) {
                 if (reaction.emoji.name === '🟢') {
@@ -859,7 +861,7 @@ export class DiscordUNO {
                     .setDescription(`${message.author.tag} has played a Wild Draw Four, ${user}, would you like to challenge this? If they had another card they could have played, they draw 6 instead, otherwise, you draw 6. If you decide not to challenge, you draw the normal 4 cards.`)
                     .setAuthor(user.username, user.displayAvatarURL({ format: "png" }));
 
-                let msg = await message.channel.send("", ChallEmbed);
+                let msg = await message.channel.send({ embeds: [ChallEmbed] });
                 await Promise.all([msg.react("✅"), msg.react("❌")]);
 
                 const f = (reaction: MessageReaction, u: User) => ["✅", "❌"].includes(reaction.emoji.name) && u.id === user.id;
@@ -896,11 +898,11 @@ export class DiscordUNO {
                         Embed.setAuthor(message.author.username, message.author.displayAvatarURL({ format: "png" }))
                             .setDescription(`You've been caught! You drew 6 cards.\n\n${data.users.find(u => u.id === user.id).hand.map(c => c.name).join(" - ")}`);
 
-                        authorMsg.edit("", { embed: Embed });
+                        authorMsg.edit({ embeds: [Embed] });
                         authorMsg.channel.send("Attention.").then(m => m.delete());
 
                         ChallEmbed.setDescription(`${message.author.tag} just played a ${card.name} on ${challenger.tag} and lost the challege! ${challenged.tag} drew 6 cards. It is now ${challenger.tag}'s turn!`)
-                        msg.edit("", { embed: ChallEmbed });
+                        msg.edit({ embeds: [ChallEmbed] });
 
                     } else {
                         type = "skip";
@@ -913,11 +915,11 @@ export class DiscordUNO {
                         Embed.setAuthor(challenger.username, challenger.displayAvatarURL({ format: "png" }))
                             .setDescription(`Looks like you lost the challenge! You drew 6 cards.\n\n${data.users.find(u => u.id === user.id).hand.map(c => c.name).join(" - ")}`)
 
-                        nextUserMsg.edit("", { embed: Embed });
+                        nextUserMsg.edit({ embeds: [Embed] });
                         nextUserMsg.channel.send("Attention.").then(m => m.delete());
 
                         ChallEmbed.setDescription(`${message.author.tag} just played a ${card.name} on ${challenger.tag} and won the challenge! ${challenger.tag} drew 6 cards. It is now ${nextTurnUser.tag}'s turn!`);
-                        msg.edit("", { embed: ChallEmbed });
+                        msg.edit({ embeds: [ChallEmbed] });
                     }
                 } else {
                     type = "skip";
@@ -931,11 +933,11 @@ export class DiscordUNO {
                     Embed.setAuthor(userToSend.username, userToSend.displayAvatarURL({ format: "png" }))
                         .setDescription(`Looks like you decided not to challenge. You drew 4 cards.\n\n${data.users[nextUser].hand.map(c => c.name).join(" - ")}`)
 
-                    nextUserMsg.edit("", { embed: Embed });
+                    nextUserMsg.edit({ embeds: [Embed] });
                     nextUserMsg.channel.send(`${userToSend}`).then(m => m.delete());
 
                     ChallEmbed.setDescription(`${message.author.tag} just played a ${card.name} on ${challenger.tag}. ${challenger.tag} decided not to challenge... They drew 4 cards and it is now ${nextTurnUser.tag}'s turn.`)
-                    msg.edit("", { embed: ChallEmbed });
+                    msg.edit({ embeds: [ChallEmbed] });
                 }
 
             } else {
@@ -951,14 +953,14 @@ export class DiscordUNO {
                 Embed.setAuthor(userToSend.username, userToSend.displayAvatarURL({ format: "png" }))
                     .setDescription(`Looks like you decided not to challenge. You drew 4 cards.\n\n${data.users[nextUser].hand.map(c => c.name).join(" - ")}`)
 
-                nextUserMsg.edit("", { embed: Embed });
+                nextUserMsg.edit({ embeds: [Embed] });
                 nextUserMsg.channel.send(`${userToSend}`).then(m => m.delete());
 
                 const RegEmbed = new MessageEmbed()
                     .setDescription(`${message.author.tag} just played a ${card.name} on ${userToSend.tag} and ${userToSend.tag} drew 4 cards. It is now ${nextTurnUser.tag}'s turn.`)
                     .setColor(this.embedColor)
                     .setAuthor(user.username, user.displayAvatarURL({ format: "png" }));
-                message.channel.send("", { embed: RegEmbed });
+                message.channel.send({ embeds: [RegEmbed] });
             }
 
 
@@ -972,7 +974,7 @@ export class DiscordUNO {
                 .setDescription(`${message.author}, which color would you like to switch to? \🔴, \🟢, \🔵, or \🟡. You have 30 seconds to respond.`)
                 .setColor(this.embedColor)
                 .setAuthor(message.author.username, message.author.displayAvatarURL({ format: "png" }))
-            const msg = await message.channel.send("", { embed: EmMsg });
+            const msg = await message.channel.send({ embeds: [EmMsg] });
 
             const filter = (reaction: MessageReaction, user: User) => {
                 if (user.bot) return;
@@ -982,7 +984,7 @@ export class DiscordUNO {
 
             await Promise.all([msg.react("🟢"), msg.react("🔴"), msg.react("🔵"), msg.react("🟡"),])
 
-            let collected = await msg.awaitReactions(filter, { max: 1, time: 30000 })
+            let collected = await msg.awaitReactions({ filter: filter, max: 1, time: 30000 })
             const reaction = collected.first();
             if (reaction !== undefined) {
                 if (reaction.emoji.name === '🟢') {
@@ -1007,14 +1009,14 @@ export class DiscordUNO {
             Embed.setAuthor(message.author.username, message.author.displayAvatarURL({ format: "png" }))
                 .setDescription(`You played a Wild and changed the color to ${color}.\n\n${data.users.find(u => u.id === message.author.id).hand.map(c => c.name).join(" | ")}`)
 
-            authorMsg.edit("", { embed: Embed });
+            authorMsg.edit({ embeds: [Embed] });
             authorMsg.channel.send("Attention.").then(m => m.delete());
 
             const MsgEmbed = new MessageEmbed()
                 .setDescription(`${message.author.tag} played a ${card.name} and switched the color to ${color}. It is now ${message.guild.members.cache.get(data.users[this.nextTurn(data.currentPlayer, "normal", settings, data)].id).user.tag}'s turn`)
                 .setColor(this.embedColor)
                 .setAuthor(message.guild.members.cache.get(data.users[this.nextTurn(data.currentPlayer, "normal", settings, data)].id).user.username, message.guild.members.cache.get(data.users[this.nextTurn(data.currentPlayer, "normal", settings, data)].id).user.displayAvatarURL({ format: "png" }));
-            msg.edit("", { embed: MsgEmbed });
+            msg.edit({ embeds: [MsgEmbed] });
 
         } else if (card.name.toLowerCase().includes("reverse")) { // Done
             special = true;
@@ -1028,13 +1030,13 @@ export class DiscordUNO {
             Embed.setAuthor(message.author.username, message.author.displayAvatarURL({ format: "png" }))
                 .setDescription(`You played a ${card.name}. You now have ${data.users.find(u => u.id === message.author.id).hand.length} cards.\n\n${data.users.find(u => u.id === message.author.id).hand.map(c => c.name).join(" | ")}`)
 
-            authorMsg.edit("", { embed: Embed });
+            authorMsg.edit({ embeds: [Embed] });
 
             const MsgEmbed = new MessageEmbed()
                 .setDescription(`${message.author.tag} played a ${card.name}. It is now ${message.client.users.cache.get(data.users[this.nextTurn(data.currentPlayer, type, settings, data)].id).tag}'s turn`)
                 .setAuthor(message.client.users.cache.get(data.users[this.nextTurn(data.currentPlayer, type, settings, data)].id).username, message.client.users.cache.get(data.users[this.nextTurn(data.currentPlayer, type, settings, data)].id).displayAvatarURL({ format: "png" }))
                 .setColor(this.embedColor);
-            message.channel.send("", { embed: MsgEmbed });
+            message.channel.send({ embeds: [MsgEmbed] });
 
         } else if (card.name.toLowerCase().includes("skip")) { // Done
             type = "skip";
@@ -1043,13 +1045,13 @@ export class DiscordUNO {
             Embed.setAuthor(message.author.username, message.author.displayAvatarURL({ format: "png" }))
                 .setDescription(`You played a ${card.name}. You now have ${data.users.find(u => u.id === message.author.id).hand.length} cards.\n\n${data.users.find(u => u.id === message.author.id).hand.map(c => c.name).join(" | ")}`);
 
-            authorMsg.edit("", { embed: Embed });
+            authorMsg.edit({ embeds: [Embed] });
 
             const SendEmbed = new MessageEmbed()
                 .setDescription(`${message.author.tag} skipped ${message.client.users.cache.get(data.users[this.nextTurn(data.currentPlayer, "normal", settings, data)].id).tag} with a ${card.name}. It is now ${message.client.users.cache.get(data.users[this.nextTurn(data.currentPlayer, "skip", settings, data)].id).tag}'s turn!`)
                 .setAuthor(message.client.users.cache.get(data.users[this.nextTurn(data.currentPlayer, "skip", settings, data)].id).username, message.client.users.cache.get(data.users[this.nextTurn(data.currentPlayer, "skip", settings, data)].id).displayAvatarURL({ format: "png" }))
                 .setColor(this.embedColor);
-            message.channel.send("", { embed: SendEmbed });
+            message.channel.send({ embeds: [SendEmbed] });
         } else if (card.name.toLowerCase().includes("zero")) { // Done
             if (settings.zero) {
                 type = "normal";
@@ -1094,14 +1096,14 @@ export class DiscordUNO {
 
                     Embed.setAuthor(message.client.users.cache.get(u.id).username, message.client.users.cache.get(u.id).displayAvatarURL({ format: "png" }))
                         .setDescription(`${message.author} played a ${card.name}. Your new hand has ${u.hand.length} cards.\n\n${u.hand.map(c => c.name).join(" | ")}.`)
-                    uMsg.edit("", { embed: Embed });
+                    uMsg.edit({ embeds: [Embed] });
                 }
 
                 const SendMessage = new MessageEmbed()
                     .setDescription(`${message.author.tag} played a ${card.name}. Everyone rotated their hand ${settings.reverse ? "counter clock-wise" : "clock-wise"}. It is now ${message.guild.members.cache.get(data.users[this.nextTurn(data.currentPlayer, "normal", settings, data)].id).user.tag}'s turn.`)
                     .setColor(this.embedColor)
                     .setAuthor(message.guild.members.cache.get(data.users[this.nextTurn(data.currentPlayer, "normal", settings, data)].id).user.username, message.guild.members.cache.get(data.users[this.nextTurn(data.currentPlayer, "normal", settings, data)].id).user.displayAvatarURL({ format: "png" }));
-                message.channel.send("", { embed: SendMessage });
+                message.channel.send({ embeds: [SendMessage] });
             }
         } else if (card.name.toLowerCase().includes("seven")) { // Done
             if (settings.seven) {
@@ -1139,7 +1141,7 @@ export class DiscordUNO {
                     .setDescription(`${message.author} who would you like to swap cards with?\n\n${desciption}`)
                     .setColor(this.embedColor)
                     .setAuthor(message.author.username, message.author.displayAvatarURL({ format: "png" }));
-                const msg = await message.channel.send("", { embed: EmbedMsg });
+                const msg = await message.channel.send({ embeds: [EmbedMsg] });
 
                 const filter = (reaction: MessageReaction, user: User) => reactions.includes(reaction.emoji.name) && message.author.id === user.id;
 
@@ -1147,7 +1149,7 @@ export class DiscordUNO {
                     msg.react(e);
                 });
 
-                const response = await msg.awaitReactions(filter, { max: 1 });
+                const response = await msg.awaitReactions({ filter: filter, max: 1 });
                 const reaction = response.first();
                 let swapToUser: Player;
                 const emojis = { "1️⃣": 0, "2️⃣": 1, "3️⃣": 2, "4️⃣": 3, "5️⃣": 4, "6️⃣": 5, "7️⃣": 6, "8️⃣": 7, "9️⃣": 8 };
@@ -1176,7 +1178,7 @@ export class DiscordUNO {
                 Embed.setDescription(`You swapped hands with ${user}! You now have ${data.users.find(u => u.id === author.id).hand.length} cards!\n\n${data.users.find(u => u.id === author.id).hand.map(c => c.name).join(" | ")}`)
                     .setAuthor(message.author.username, message.author.displayAvatarURL({ format: "png" }));
 
-                authorMsg.edit("", Embed);
+                authorMsg.edit({ embeds: [Embed] });
                 authorChannel.send("Attention.").then(m => m.delete());
 
                 const userChannel = <DMChannel>message.client.channels.cache.get(data.users.find(u => u.id === user.id).DM.channelId);
@@ -1186,11 +1188,11 @@ export class DiscordUNO {
                     .setAuthor(user.username, user.displayAvatarURL({ format: "png" }));
 
                 userChannel.send("Attention.").then(m => m.delete());
-                userMsg.edit("", { embed: Embed });
+                userMsg.edit({ embeds: [Embed] });
 
                 EmbedMsg.setDescription(`${message.author} swapped hands with ${user}! It is now ${message.client.users.cache.get(data.users[this.nextTurn(data.currentPlayer, "normal", settings, data)].id)}'s turn!`)
                     .setAuthor(message.client.users.cache.get(data.users[this.nextTurn(data.currentPlayer, "normal", settings, data)].id).username, message.client.users.cache.get(data.users[this.nextTurn(data.currentPlayer, "normal", settings, data)].id).displayAvatarURL({ format: "png" }));
-                msg.edit("", { embed: EmbedMsg }).then(m => m.reactions.removeAll());
+                msg.edit({ embeds: [EmbedMsg] }).then(m => m.reactions.removeAll());
             }
         } else if (card.name.toLowerCase().includes("draw two")) { // Done
             type = "skip";
@@ -1204,13 +1206,13 @@ export class DiscordUNO {
 
             Embed.setDescription(`${message.author} played a ${card.name}. You drew 2 cards. Your new hand has ${skippedUser.hand.length} cards.\n\n${skippedUser.hand.map(c => c.name).join(" | ")}`)
                 .setAuthor(message.client.users.cache.get(skippedUser.id).username, message.client.users.cache.get(skippedUser.id).displayAvatarURL({ format: "png" }));
-            nextUserMsg.edit("", { embed: Embed });
+            nextUserMsg.edit({ embeds: [Embed] });
             nextUserChannel.send("Attention.").then(m => m.delete());
             const SendEmbed = new MessageEmbed()
                 .setAuthor(message.client.users.cache.get(data.users[this.nextTurn(data.currentPlayer, "skip", settings, data)].id).username, message.client.users.cache.get(data.users[this.nextTurn(data.currentPlayer, "skip", settings, data)].id).displayAvatarURL({ format: "png" }))
                 .setColor(this.embedColor)
                 .setDescription(`${message.author.tag} played a ${card.name} on ${message.client.users.cache.get(skippedUser.id).tag}. They drew two cards and it is now ${message.client.users.cache.get(data.users[this.nextTurn(data.currentPlayer, "skip", settings, data)].id).tag}'s turn!`)
-            message.channel.send("", { embed: SendEmbed });
+            message.channel.send({ embeds: [SendEmbed] });
 
         }
 
