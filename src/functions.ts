@@ -105,7 +105,6 @@ async function getCard(tosolve: String[]):Promise<String> {
             else {
                 if (solvedCard.includes("wild")) {
                     console.log(`> ${originalCard} => NO WILD COLOR`);
-                    return 
                 } else {
                     console.log(`> ${originalCard} => NO COLOR`);
                     return reject("NO_COLOR");
