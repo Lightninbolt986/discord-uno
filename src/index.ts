@@ -308,10 +308,10 @@ if(!cardObject) return message.channel.send('You don\'t have that card in your h
         if (!special) {
             foundGame.currentPlayer = this.nextTurn(foundGame.currentPlayer, "normal", settings, foundGame);
             this.storage.set(message.channel.id, foundGame);
-
+let img = new MessageAttachment(cardObject.image, 'e.png')
             const Embed = new MessageEmbed()
                 .setDescription(`${message.client.users.cache.get(foundGame.users[lastPlayer].id).tag} played a ${cardObject.name}. It is now ${message.client.users.cache.get(foundGame.users[foundGame.currentPlayer].id).tag}'s turn.`)
-                .setImage(cardObject.image)
+                .setImage(`img://e.png`)
                 .setColor(this.embedColor)
                 .setAuthor(message.client.users.cache.get(foundGame.users[foundGame.currentPlayer].id).username, message.client.users.cache.get(foundGame.users[foundGame.currentPlayer].id).displayAvatarURL({ format: "png" }));
             if (foundGame.users[lastPlayer].hand.length >= 1) message.channel.send({ embeds: [Embed] });
