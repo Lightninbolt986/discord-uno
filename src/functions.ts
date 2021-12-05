@@ -113,7 +113,8 @@ async function getCard(tosolve: String[]):Promise<String> {
         }
 
         console.log(`> ${originalCard} => ${solvedCard}`);
-        return resolve(solvedCard.replace('1', 'one').replace('0', 'zero').replace('2', 'two').replace('3', 'three').replace('4', 'four').replace('5', 'five').replace('6', 'six').replace('7', 'seven').replace('8', 'eight').replace('9', 'nine').replace('red', 'red ').replace('green', 'green ').replace('yellow', 'yellow ').replace('blue', 'blue ').replace('wild', 'wild ').replace('drawtwo', 'draw two').replace('drawfour', 'draw four'));
+        const finalCard = solvedCard.replace('1', 'one').replace('0', 'zero').replace('2', 'two').replace('3', 'three').replace('4', 'four').replace('5', 'five').replace('6', 'six').replace('7', 'seven').replace('8', 'eight').replace('9', 'nine').replace('red', 'red ').replace('green', 'green ').replace('yellow', 'yellow ').replace('blue', 'blue ').replace('wild', 'wild ').replace('drawtwo', 'draw two').replace('drawfour', 'draw four')
+        return resolve(`${finalCard == 'wild '? 'wild' : finalCard}`);
     });
 }
 function getCardColor(card: String, raw = false) {
