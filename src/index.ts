@@ -8,35 +8,12 @@ import Player from "./data/interfaces/User.interface";
 import Winners from "./data/interfaces/Winners.interface";
 import axios from "axios";
 import functions from "./functions"
-const NPMPackage = require("./package.json");
 export class DiscordUNO {
 
     storage = new Collection<Snowflake, GameData>()
     gameCards = new Collection<Snowflake, typeof gameCardsArray>()
     settings = new Collection<Snowflake, Settings>()
     winners = new Collection<Snowflake, Winners[]>()
-
-    public version = {
-        current: NPMPackage.version,
-        updates: async function (message?: Message) {
-            const repsonse = await axios.get("https://registry.npmjs.org/discord-uno");
-            const data = repsonse.data;
-            const latest = data["dist-tags"].latest.split(".");
-            const curr = NPMPackage.version.split(".");
-            let update = false;
-            if (parseInt(latest[0]) > parseInt(curr[0])) update = true;
-            else if (parseInt(latest[1]) > parseInt(curr[1])) update = true;
-            else if (parseInt(latest[2]) > parseInt(curr[2])) update = true;
-            if (message) {
-                if (update) return message.channel.send("There is an update availiable! Consider checking it out!");
-                else return message.channel.send("You are up to date!");
-            } else {
-                if (update) return "There is an update availiable for discord-uno! Consider checking it out!"
-            }
-        }
-    }
-
-
     constructor(
         public embedColor?: ColorResolvable,
     ) { if (!this.embedColor) this.embedColor = "#FF0000" };
