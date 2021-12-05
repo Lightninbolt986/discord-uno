@@ -850,12 +850,15 @@ let img = new MessageAttachment(cardObject.image, 'e.png')
             let challenge = false;
             if (settings.wildChallenge) {
 
+                let img = new MessageAttachment(card.image, 'e.png')
                 const ChallEmbed = new MessageEmbed()
                     .setColor(this.embedColor)
+         
+               .setImage(`attachment://e.png`)
                     .setDescription(`${message.author.tag} has played a Wild Draw Four, ${user}, would you like to challenge this? If they had another card they could have played, they draw 6 instead, otherwise, you draw 6. If you decide not to challenge, you draw the normal 4 cards.`)
                     .setAuthor(user.username, user.displayAvatarURL({ format: "png" }));
 
-                let msg = await message.channel.send({ embeds: [ChallEmbed] });
+                let msg = await message.channel.send({ embeds: [ChallEmbed] , files:[img]});
                 await Promise.all([msg.react("✅"), msg.react("❌")]);
 
                 const f = (reaction: MessageReaction, u: User) => ["✅", "❌"].includes(reaction.emoji.name) && u.id === user.id;
@@ -964,11 +967,13 @@ let img = new MessageAttachment(cardObject.image, 'e.png')
 
             let color: "green" | "red" | "blue" | "yellow";
 
+            let img = new MessageAttachment(card.image, 'e.png')
             const EmMsg = new MessageEmbed()
                 .setDescription(`${message.author}, which color would you like to switch to? \🔴, \🟢, \🔵, or \🟡. You have 30 seconds to respond.`)
                 .setColor(this.embedColor)
+               .setImage(`attachment://e.png`)
                 .setAuthor(message.author.username, message.author.displayAvatarURL({ format: "png" }))
-            const msg = await message.channel.send({ embeds: [EmMsg] });
+            const msg = await message.channel.send({ embeds: [EmMsg], files:[img] });
 
             const filter = (reaction: MessageReaction, user: User) => {
                 if (user.bot) return;
@@ -1026,11 +1031,14 @@ let img = new MessageAttachment(cardObject.image, 'e.png')
 
             authorMsg.edit({ embeds: [Embed] });
 
+            let img = new MessageAttachment(card.image, 'e.png')
             const MsgEmbed = new MessageEmbed()
+            
+            .setImage(`attachment://e.png`)
                 .setDescription(`${message.author.tag} played a ${card.name}. It is now ${message.client.users.cache.get(data.users[this.nextTurn(data.currentPlayer, type, settings, data)].id).tag}'s turn`)
                 .setAuthor(message.client.users.cache.get(data.users[this.nextTurn(data.currentPlayer, type, settings, data)].id).username, message.client.users.cache.get(data.users[this.nextTurn(data.currentPlayer, type, settings, data)].id).displayAvatarURL({ format: "png" }))
                 .setColor(this.embedColor);
-            message.channel.send({ embeds: [MsgEmbed] });
+            message.channel.send({ embeds: [MsgEmbed], files:[img] });
 
         } else if (card.name.toLowerCase().includes("skip")) { // Done
             type = "skip";
@@ -1041,11 +1049,14 @@ let img = new MessageAttachment(cardObject.image, 'e.png')
 
             authorMsg.edit({ embeds: [Embed] });
 
+            let img = new MessageAttachment(card.image, 'e.png')
             const SendEmbed = new MessageEmbed()
+            
+            .setImage(`attachment://e.png`)
                 .setDescription(`${message.author.tag} skipped ${message.client.users.cache.get(data.users[this.nextTurn(data.currentPlayer, "normal", settings, data)].id).tag} with a ${card.name}. It is now ${message.client.users.cache.get(data.users[this.nextTurn(data.currentPlayer, "skip", settings, data)].id).tag}'s turn!`)
                 .setAuthor(message.client.users.cache.get(data.users[this.nextTurn(data.currentPlayer, "skip", settings, data)].id).username, message.client.users.cache.get(data.users[this.nextTurn(data.currentPlayer, "skip", settings, data)].id).displayAvatarURL({ format: "png" }))
                 .setColor(this.embedColor);
-            message.channel.send({ embeds: [SendEmbed] });
+            message.channel.send({ embeds: [SendEmbed], files:[img] });
         } else if (card.name.toLowerCase().includes("zero")) { // Done
             if (settings.zero) {
                 type = "normal";
@@ -1093,11 +1104,14 @@ let img = new MessageAttachment(cardObject.image, 'e.png')
                     uMsg.edit({ embeds: [Embed] });
                 }
 
+                let img = new MessageAttachment(card.image, 'e.png')
                 const SendMessage = new MessageEmbed()
                     .setDescription(`${message.author.tag} played a ${card.name}. Everyone rotated their hand ${settings.reverse ? "counter clock-wise" : "clock-wise"}. It is now ${message.guild.members.cache.get(data.users[this.nextTurn(data.currentPlayer, "normal", settings, data)].id).user.tag}'s turn.`)
                     .setColor(this.embedColor)
+                    
+               .setImage(`attachment://e.png`)
                     .setAuthor(message.guild.members.cache.get(data.users[this.nextTurn(data.currentPlayer, "normal", settings, data)].id).user.username, message.guild.members.cache.get(data.users[this.nextTurn(data.currentPlayer, "normal", settings, data)].id).user.displayAvatarURL({ format: "png" }));
-                message.channel.send({ embeds: [SendMessage] });
+                message.channel.send({ embeds: [SendMessage], files:[img] });
             }
         } else if (card.name.toLowerCase().includes("seven")) { // Done
             if (settings.seven) {
@@ -1131,11 +1145,15 @@ let img = new MessageAttachment(cardObject.image, 'e.png')
                 const numbers = { "0": "1️⃣", "1": "2️⃣", "2": "3️⃣", "3": "4️⃣", "4": "5️⃣", "5": "6️⃣", "6": "7️⃣", "7": "8️⃣", "8": "9️⃣" }
                 //@ts-ignore
                 const desciption = dataToChooseFrom.map(user => `${numbers[(dataToChooseFrom.findIndex(u => u.id === user.id) + 1).toString()]} - ${message.guild.members.cache.get(user.id).user.tag} has ${user.hand.length} cards`).join("\n");
+  
+                let img = new MessageAttachment(card.image, 'e.png')
                 const EmbedMsg = new MessageEmbed()
                     .setDescription(`${message.author} who would you like to swap cards with?\n\n${desciption}`)
                     .setColor(this.embedColor)
-                    .setAuthor(message.author.username, message.author.displayAvatarURL({ format: "png" }));
-                const msg = await message.channel.send({ embeds: [EmbedMsg] });
+                    .setAuthor(message.author.username, message.author.displayAvatarURL({ format: "png" }))
+                    
+               .setImage(`attachment://e.png`)
+                const msg = await message.channel.send({ embeds: [EmbedMsg], files:[img] });
 
                 const filter = (reaction: MessageReaction, user: User) => reactions.includes(reaction.emoji.name) && message.author.id === user.id;
 
@@ -1185,8 +1203,9 @@ let img = new MessageAttachment(cardObject.image, 'e.png')
                 userMsg.edit({ embeds: [Embed] });
 
                 EmbedMsg.setDescription(`${message.author} swapped hands with ${user}! It is now ${message.client.users.cache.get(data.users[this.nextTurn(data.currentPlayer, "normal", settings, data)].id)}'s turn!`)
-                    .setAuthor(message.client.users.cache.get(data.users[this.nextTurn(data.currentPlayer, "normal", settings, data)].id).username, message.client.users.cache.get(data.users[this.nextTurn(data.currentPlayer, "normal", settings, data)].id).displayAvatarURL({ format: "png" }));
-                msg.edit({ embeds: [EmbedMsg] }).then(m => m.reactions.removeAll());
+                .setImage(`attachment://e.png`)
+                .setAuthor(message.client.users.cache.get(data.users[this.nextTurn(data.currentPlayer, "normal", settings, data)].id).username, message.client.users.cache.get(data.users[this.nextTurn(data.currentPlayer, "normal", settings, data)].id).displayAvatarURL({ format: "png" }));
+                msg.edit({ embeds: [EmbedMsg] , files:[img]}).then(m => m.reactions.removeAll());
             }
         } else if (card.name.toLowerCase().includes("draw two")) { // Done
             type = "skip";
@@ -1202,11 +1221,15 @@ let img = new MessageAttachment(cardObject.image, 'e.png')
                 .setAuthor(message.client.users.cache.get(skippedUser.id).username, message.client.users.cache.get(skippedUser.id).displayAvatarURL({ format: "png" }));
             nextUserMsg.edit({ embeds: [Embed] });
             nextUserChannel.send("Attention.").then(m => m.delete());
+            
+            let img = new MessageAttachment(card.image, 'e.png')
             const SendEmbed = new MessageEmbed()
                 .setAuthor(message.client.users.cache.get(data.users[this.nextTurn(data.currentPlayer, "skip", settings, data)].id).username, message.client.users.cache.get(data.users[this.nextTurn(data.currentPlayer, "skip", settings, data)].id).displayAvatarURL({ format: "png" }))
                 .setColor(this.embedColor)
+                
+               .setImage(`attachment://e.png`)
                 .setDescription(`${message.author.tag} played a ${card.name} on ${message.client.users.cache.get(skippedUser.id).tag}. They drew two cards and it is now ${message.client.users.cache.get(data.users[this.nextTurn(data.currentPlayer, "skip", settings, data)].id).tag}'s turn!`)
-            message.channel.send({ embeds: [SendEmbed] });
+            message.channel.send({ embeds: [SendEmbed], files:[img] });
 
         }
 
