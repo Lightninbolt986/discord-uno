@@ -6,7 +6,6 @@ import GameData from "./data/interfaces/GameData.interface";
 import Settings from "./data/interfaces/Settings.interface";
 import Player from "./data/interfaces/User.interface";
 import Winners from "./data/interfaces/Winners.interface";
-import axios from "axios";
 import functions from "./functions"
 export class DiscordUNO {
 
