@@ -314,7 +314,7 @@ let img = new MessageAttachment(cardObject.image, 'e.png')
                 .setImage(`attachment://e.png`)
                 .setColor(this.embedColor)
                 .setAuthor(message.client.users.cache.get(foundGame.users[foundGame.currentPlayer].id).username, message.client.users.cache.get(foundGame.users[foundGame.currentPlayer].id).displayAvatarURL({ format: "png" }));
-            if (foundGame.users[lastPlayer].hand.length >= 1) message.channel.send({ embeds: [Embed] });
+            if (foundGame.users[lastPlayer].hand.length >= 1) message.channel.send({ embeds: [Embed],files:[img] });
         }
         let gameLength = foundGame.users.length;
         for (let i = 0; i < gameLength; i++) {
