@@ -325,6 +325,7 @@ export class DiscordUNO {
                 foundGame.users.splice(foundGame.users.findIndex(u => u.id === foundGame.users[i].id), 1);
                 i--;
                 gameLength--;
+                foundGame.currentPlayer = this.nextTurn(foundGame.currentPlayer, "normal", settings, foundGame);
                 const Embed = new MessageEmbed()
                     .setAuthor(message.author.username, message.author.displayAvatarURL({ format: "png" }))
                     .setColor(this.embedColor)
