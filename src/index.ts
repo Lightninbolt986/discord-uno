@@ -7,9 +7,8 @@ import Settings from "./data/interfaces/Settings.interface";
 import Player from "./data/interfaces/User.interface";
 import Winners from "./data/interfaces/Winners.interface";
 import axios from "axios";
-
+import functions from "./functions"
 const NPMPackage = require("./package.json");
-
 export class DiscordUNO {
 
     storage = new Collection<Snowflake, GameData>()
@@ -282,8 +281,26 @@ export class DiscordUNO {
         const settings = this.settings.get(message.channel.id);
 
         const user = settings.jumpIns ? foundGame.users.find(u => u.id === message.author.id) : foundGame.users[foundGame.currentPlayer];
-        const card = message.content.split(" ").slice(1).join(" ");
-        if (!card) return message.channel.send("Please provide a valid card.");
+        const theCard = message.content.split(" ").slice(1)
+        if(!theCard){ return message.channel.send(`You need to provide a card to play`)}
+        const card = await functions.getCard(theCard).catch(async (reason) => {
+		
+
+		
+				if (reason == "NO_COLOR") {
+					await message.channel.send('You need to provide a valid color')
+                    return "return";
+				} else if (reason == "WILD_NO_COLOR") {
+					return 'e'
+				} else if (reason == "NO_NUMBER") {
+					await message.channel.send('You need to provide a valid number')
+                    return "return";
+				}
+			
+
+			
+		});
+        if ( card == 'return') return 
 
         const cardObject = user.hand.find(crd => crd.name.toLowerCase() === card.toLowerCase());
 
@@ -342,10 +359,9 @@ export class DiscordUNO {
                     foundGame.users.splice(foundGame.users.findIndex(u => u.id === foundGame.users[i].id), 1);
                     const attach = new MessageAttachment(await this.displayWinners(message, winners), "Winners.png");
                     Embed.setAuthor(message.client.user.username, message.client.user.displayAvatarURL({ format: "png" }))
-                        .attachFiles([attach])
                         .setImage(`attachment://Winners.png`)
                         .setDescription(`${message.author} went out with 0 cards! There was only one person left in the game so scores have been calculated!`)
-                    return message.channel.send({ embeds: [Embed] });
+                    return message.channel.send({ embeds: [Embed], files:[attach] });
 
                 }
             }
@@ -536,7 +552,7 @@ export class DiscordUNO {
         this.gameCards.delete(message.channel.id);
         this.winners.delete(message.channel.id);
 
-        return message.channel.send(`The game has been ended by ${message.author}! Scores have been calculated.`, {
+        return message.channel.send({content:`The game has been ended by ${message.author}! Scores have been calculated.`, 
             files: [
                 new MessageAttachment(winnersImage),
             ]
@@ -866,7 +882,7 @@ export class DiscordUNO {
 
                 const f = (reaction: MessageReaction, u: User) => ["✅", "❌"].includes(reaction.emoji.name) && u.id === user.id;
 
-                let collected2 = await msg.awaitReactions(f, { max: 1, time: 30000 });
+                let collected2 = await msg.awaitReactions({filter:f, max: 1, time: 30000 });
                 if (collected2.size > 0) {
                     const reaction2 = collected2.first();
                     switch (reaction2.emoji.name) {
