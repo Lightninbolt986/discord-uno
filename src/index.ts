@@ -281,8 +281,7 @@ export class DiscordUNO {
 
         const cardObject = user.hand.find(crd => crd.name.toLowerCase() === card.toLowerCase());
 
-        if (!cardObject && settings.jumpIns) return message.channel.send("You don't have that card in your hand!");
-        else if (!cardObject && !settings.jumpIns) return message.channel.send("It isn't your turn yet!");
+if(!cardObject) return message.channel.send('You don\'t have that card in your hand')
 
         let jumpedIn = false;
         if (settings.jumpIns) {
@@ -312,6 +311,7 @@ export class DiscordUNO {
 
             const Embed = new MessageEmbed()
                 .setDescription(`${message.client.users.cache.get(foundGame.users[lastPlayer].id).tag} played a ${cardObject.name}. It is now ${message.client.users.cache.get(foundGame.users[foundGame.currentPlayer].id).tag}'s turn.`)
+                .setImage(cardObject.image)
                 .setColor(this.embedColor)
                 .setAuthor(message.client.users.cache.get(foundGame.users[foundGame.currentPlayer].id).username, message.client.users.cache.get(foundGame.users[foundGame.currentPlayer].id).displayAvatarURL({ format: "png" }));
             if (foundGame.users[lastPlayer].hand.length >= 1) message.channel.send({ embeds: [Embed] });
