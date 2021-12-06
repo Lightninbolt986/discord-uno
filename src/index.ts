@@ -960,14 +960,14 @@ let img = new MessageAttachment(foundGame.topCard.image, 'e.png')
 
                 nextUserMsg.edit({ embeds: [Embed] });
                 nextUserMsg.channel.send(`${userToSend}`).then(m => m.delete());
-
+                let img = new MessageAttachment(card.image, 'e.png')
                 const RegEmbed = new MessageEmbed()
                     .setDescription(`${message.author.tag} just played a ${card.name} on ${userToSend.tag} and ${userToSend.tag} drew 4 cards. It is now ${nextTurnUser.tag}'s turn.`)
                     .setColor(this.embedColor)
                     
                     .setThumbnail(`attachment://e.png`)
                     .setAuthor(user.username, user.displayAvatarURL({ format: "png" }));
-                message.channel.send({ embeds: [RegEmbed] });
+                message.channel.send({ embeds: [RegEmbed], files:[img] });
             }
 
 
