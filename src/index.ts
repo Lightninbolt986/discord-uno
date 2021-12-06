@@ -107,12 +107,14 @@ export class DiscordUNO {
                     .setColor(this.embedColor);
                 message.channel.send({ embeds: [BadEmbed] });
             }
-
+let img = new MessageAttachment(foundGame.topCard.image, 'e.png')
             const Embed = new MessageEmbed()
                 .setColor(this.embedColor)
                 .setDescription(`**Top Card:** ${foundGame.topCard.name}`)
-                .setFooter(`Current Player: ${(<User>message.client.users.cache.get(foundGame.users[foundGame.currentPlayer].id)).tag}`);
-            return message.channel.send({ embeds: [Embed] });
+                .setFooter(`Current Player: ${(<User>message.client.users.cache.get(foundGame.users[foundGame.currentPlayer].id)).tag}`)
+                
+                .setThumbnail(`attachment://e.png`);
+            return message.channel.send({ embeds: [Embed] , files:[img]});
         }
         this.storage.set(message.channel.id, foundGame);
 
@@ -238,12 +240,13 @@ export class DiscordUNO {
                 .setColor(this.embedColor);
             message.channel.send({ embeds: [BadEmbed] });
         }
-
+        let img = new MessageAttachment(foundGame.topCard.image, 'e.png')
         const Embed = new MessageEmbed()
             .setColor(this.embedColor)
             .setDescription(`**Top Card:** ${foundGame.topCard.name}`)
-            .setFooter(`Current Player: ${(<User>message.client.users.cache.get(foundGame.users[foundGame.currentPlayer].id)).tag}`);
-        return message.channel.send({ embeds: [Embed] });
+            .setFooter(`Current Player: ${(<User>message.client.users.cache.get(foundGame.users[foundGame.currentPlayer].id)).tag}`)
+            .setThumbnail(`attachment://e.png`);
+        return message.channel.send({ embeds: [Embed] , files:[img]});
     }
     /**
      * To play a card in your hand, call the playCard() method. This method accepts one parameter, which is the message object. This method will handle playing the card called. On success, it will remove the card from their hand and replace the top card. On fail it will return.
