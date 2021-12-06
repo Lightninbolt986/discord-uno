@@ -1,4 +1,4 @@
-async function getCard(tosolve: String[]):Promise<String> {
+async function getCard(tosolve: String[]): Promise<String> {
     return new Promise(async (resolve, reject) => {
         var solvedCard = "";
         var originalCard = tosolve.join(" ");
@@ -114,7 +114,7 @@ async function getCard(tosolve: String[]):Promise<String> {
 
         console.log(`> ${originalCard} => ${solvedCard}`);
         const finalCard = solvedCard.replace('1', 'one').replace('0', 'zero').replace('2', 'two').replace('3', 'three').replace('4', 'four').replace('5', 'five').replace('6', 'six').replace('7', 'seven').replace('8', 'eight').replace('9', 'nine').replace('red', 'red ').replace('green', 'green ').replace('yellow', 'yellow ').replace('blue', 'blue ').replace('wild', 'wild ').replace('drawtwo', 'draw two').replace('drawfour', 'draw four')
-        return resolve(`${finalCard == 'wild '? 'wild' : finalCard}`);
+        return resolve(`${finalCard == 'wild ' ? 'wild' : finalCard}`);
     });
 }
 function getCardColor(card: String, raw = false) {
@@ -127,7 +127,10 @@ function getCardColor(card: String, raw = false) {
         } else return cardColor[0];
     } else return false;
 }
+function getWordToNumb(message: String){
+return message.replace('Six', '6').replace('One', '1').replace('Two', '2').replace('Three', '3').replace('Four', '4').replace('Five', '5').replace('Seven', '7').replace('Eight', '8').replace('Nine', '9').replace('Zero', '0').replace('Reverse', '**REVERSE**').replace('Skip', '**SKIP**').replace('Draw ', '+')
+}
 const functions = {
-    getCard:getCard, getCardColor:getCardColor
+    getCard: getCard, getCardColor: getCardColor, getWordToNumb:getWordToNumb
 }
 export default functions

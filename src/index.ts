@@ -189,7 +189,7 @@ export class DiscordUNO {
 
             const Embed = new MessageEmbed()
                 .setColor(this.embedColor)
-                .setDescription(`Your current hand has ${userHand.length} cards. The cards are\n${userHand.map(data => data.name).join(" | ")}`)
+                .setDescription(`Your current hand has ${userHand.length} cards. The cards are\n${functions.getWordToNumb(userHand.map(data => data.name).join(" | "))}`)
                 .setAuthor(message.author.username, message.author.displayAvatarURL({ format: "png" }));
             const authorChannel = <DMChannel>message.client.channels.cache.get(foundGame.users.find(u => u.id === message.author.id).DM.channelId);
             const authorMsg = authorChannel.messages.cache.get(foundGame.users.find(u => u.id === message.author.id).DM.messageId);
@@ -893,7 +893,7 @@ export class DiscordUNO {
                         });
 
                         Embed.setAuthor(message.author.username, message.author.displayAvatarURL({ format: "png" }))
-                            .setDescription(`You've been caught! You drew 6 cards.\n\n${data.users.find(u => u.id === user.id).hand.map(c => c.name).join(" - ")}`);
+                            .setDescription(`You've been caught! You drew 6 cards.\n\n${functions.getWordToNumb(data.users.find(u => u.id === user.id).hand.map(c => c.name).join(" - "))}`);
 
                         authorMsg.edit({ embeds: [Embed] });
                         authorMsg.channel.send("Attention.").then(m => m.delete());
@@ -1006,8 +1006,8 @@ export class DiscordUNO {
             data.topCard.color = color;
 
             Embed.setAuthor(message.author.username, message.author.displayAvatarURL({ format: "png" }))
-                .setDescription(`You played a Wild and changed the color to ${color}.\n\n${data.users.find(u => u.id === message.author.id).hand.map(c => c.name).join(" | ")}`)
-
+                .setDescription(`You played a Wild and changed the color to ${color}.\n\n${functions.getWordToNumb(data.users.find(u => u.id === message.author.id).hand.map(c => c.name).join(" | "))}`)
+                .setThumbnail(`attachment://e.png`)
             authorMsg.edit({ embeds: [Embed] });
             authorMsg.channel.send("Attention.").then(m => m.delete());
 
@@ -1027,7 +1027,7 @@ export class DiscordUNO {
             authorMsg.channel.send("Attention.").then(m => m.delete());
 
             Embed.setAuthor(message.author.username, message.author.displayAvatarURL({ format: "png" }))
-                .setDescription(`You played a ${card.name}. You now have ${data.users.find(u => u.id === message.author.id).hand.length} cards.\n\n${data.users.find(u => u.id === message.author.id).hand.map(c => c.name).join(" | ")}`)
+                .setDescription(`You played a ${card.name}. You now have ${data.users.find(u => u.id === message.author.id).hand.length} cards.\n\n${functions.getWordToNumb(data.users.find(u => u.id === message.author.id).hand.map(c => c.name).join(" | "))}`)
 
             authorMsg.edit({ embeds: [Embed] });
 
@@ -1045,7 +1045,7 @@ export class DiscordUNO {
             special = true;
             authorMsg.channel.send("Attention.").then(m => m.delete());
             Embed.setAuthor(message.author.username, message.author.displayAvatarURL({ format: "png" }))
-                .setDescription(`You played a ${card.name}. You now have ${data.users.find(u => u.id === message.author.id).hand.length} cards.\n\n${data.users.find(u => u.id === message.author.id).hand.map(c => c.name).join(" | ")}`);
+                .setDescription(`You played a ${card.name}. You now have ${data.users.find(u => u.id === message.author.id).hand.length} cards.\n\n${functions.getWordToNumb(data.users.find(u => u.id === message.author.id).hand.map(c => c.name).join(" | "))}`);
 
             authorMsg.edit({ embeds: [Embed] });
 
@@ -1187,7 +1187,7 @@ export class DiscordUNO {
                 data.users.find(user => user.id === authorId).hand = toSwapHand;
                 data.users.find(u => u.id === toSwapToId).hand = authorHand;
 
-                Embed.setDescription(`You swapped hands with ${user}! You now have ${data.users.find(u => u.id === author.id).hand.length} cards!\n\n${data.users.find(u => u.id === author.id).hand.map(c => c.name).join(" | ")}`)
+                Embed.setDescription(`You swapped hands with ${user}! You now have ${data.users.find(u => u.id === author.id).hand.length} cards!\n\n${functions.getWordToNumb(data.users.find(u => u.id === author.id).hand.map(c => c.name).join(" | "))}`)
                     .setAuthor(message.author.username, message.author.displayAvatarURL({ format: "png" }));
 
                 authorMsg.edit({ embeds: [Embed] });
