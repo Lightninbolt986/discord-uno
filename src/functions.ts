@@ -128,7 +128,7 @@ function getCardColor(card: String, raw = false) {
     } else return false;
 }
 function getWordToNumb(message: String){
-return message.replace('Six', '6').replace('One', '1').replace('Two', '2').replace('Three', '3').replace('Four', '4').replace('Five', '5').replace('Seven', '7').replace('Eight', '8').replace('Nine', '9').replace('Zero', '0').replace('Reverse', '**REVERSE**').replace('Skip', '**SKIP**').replace('Draw ', '+')
+return message.replaceAll('Six', '6').replaceAll('One', '1').replaceAll('Two', '2').replaceAll('Three', '3').replaceAll('Four', '4').replaceAll('Five', '5').replaceAll('Seven', '7').replaceAll('Eight', '8').replaceAll('Nine', '9').replaceAll('Zero', '0').replaceAll('Reverse', '**REVERSE**').replaceAll('Skip', '**SKIP**').replaceAll('Draw ', '+')
 }
 const functions = {
     getCard: getCard, getCardColor: getCardColor, getWordToNumb:getWordToNumb

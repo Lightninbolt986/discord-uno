@@ -893,12 +893,13 @@ export class DiscordUNO {
                         });
 
                         Embed.setAuthor(message.author.username, message.author.displayAvatarURL({ format: "png" }))
-                            .setDescription(`You've been caught! You drew 6 cards.\n\n${functions.getWordToNumb(data.users.find(u => u.id === user.id).hand.map(c => c.name).join(" - "))}`);
-
+                            .setDescription(`You've been caught! You drew 6 cards.\n\n${functions.getWordToNumb(data.users.find(u => u.id === user.id).hand.map(c => c.name).join(" | "))}`)
                         authorMsg.edit({ embeds: [Embed] });
                         authorMsg.channel.send("Attention.").then(m => m.delete());
 
                         ChallEmbed.setDescription(`${message.author.tag} just played a ${card.name} on ${challenger.tag} and lost the challege! ${challenged.tag} drew 6 cards. It is now ${challenger.tag}'s turn!`)
+
+                            .setThumbnail(`attachment://e.png`)
                         msg.edit({ embeds: [ChallEmbed] });
 
                     } else {
@@ -910,12 +911,14 @@ export class DiscordUNO {
                         });
 
                         Embed.setAuthor(challenger.username, challenger.displayAvatarURL({ format: "png" }))
-                            .setDescription(`Looks like you lost the challenge! You drew 6 cards.\n\n${data.users.find(u => u.id === user.id).hand.map(c => c.name).join(" - ")}`)
+                            .setDescription(`Looks like you lost the challenge! You drew 6 cards.\n\n${functions.getWordToNumb(data.users.find(u => u.id === user.id).hand.map(c => c.name).join(" | "))}`)
 
                         nextUserMsg.edit({ embeds: [Embed] });
                         nextUserMsg.channel.send("Attention.").then(m => m.delete());
 
-                        ChallEmbed.setDescription(`${message.author.tag} just played a ${card.name} on ${challenger.tag} and won the challenge! ${challenger.tag} drew 6 cards. It is now ${nextTurnUser.tag}'s turn!`);
+                        ChallEmbed.setDescription(`${message.author.tag} just played a ${card.name} on ${challenger.tag} and won the challenge! ${challenger.tag} drew 6 cards. It is now ${nextTurnUser.tag}'s turn!`)
+
+                            .setThumbnail(`attachment://e.png`)
                         msg.edit({ embeds: [ChallEmbed] });
                     }
                 } else {
@@ -928,12 +931,14 @@ export class DiscordUNO {
                     const userToSend = message.client.users.cache.get(data.users[nextUser].id);
 
                     Embed.setAuthor(userToSend.username, userToSend.displayAvatarURL({ format: "png" }))
-                        .setDescription(`Looks like you decided not to challenge. You drew 4 cards.\n\n${data.users[nextUser].hand.map(c => c.name).join(" - ")}`)
+                        .setDescription(`Looks like you decided not to challenge. You drew 4 cards.\n\n${functions.getWordToNumb(data.users[nextUser].hand.map(c => c.name).join(" | "))}`)
 
                     nextUserMsg.edit({ embeds: [Embed] });
                     nextUserMsg.channel.send(`${userToSend}`).then(m => m.delete());
 
                     ChallEmbed.setDescription(`${message.author.tag} just played a ${card.name} on ${challenger.tag}. ${challenger.tag} decided not to challenge... They drew 4 cards and it is now ${nextTurnUser.tag}'s turn.`)
+                    
+                    .setThumbnail(`attachment://e.png`)
                     msg.edit({ embeds: [ChallEmbed] });
                 }
 
@@ -948,7 +953,7 @@ export class DiscordUNO {
                 const userToSend = message.client.users.cache.get(data.users[nextUser].id);
 
                 Embed.setAuthor(userToSend.username, userToSend.displayAvatarURL({ format: "png" }))
-                    .setDescription(`Looks like you decided not to challenge. You drew 4 cards.\n\n${data.users[nextUser].hand.map(c => c.name).join(" - ")}`)
+                    .setDescription(`Looks like you decided not to challenge. You drew 4 cards.\n\n${functions.getWordToNumb(data.users[nextUser].hand.map(c => c.name).join(" | "))}`)
 
                 nextUserMsg.edit({ embeds: [Embed] });
                 nextUserMsg.channel.send(`${userToSend}`).then(m => m.delete());
@@ -956,6 +961,8 @@ export class DiscordUNO {
                 const RegEmbed = new MessageEmbed()
                     .setDescription(`${message.author.tag} just played a ${card.name} on ${userToSend.tag} and ${userToSend.tag} drew 4 cards. It is now ${nextTurnUser.tag}'s turn.`)
                     .setColor(this.embedColor)
+                    
+                    .setThumbnail(`attachment://e.png`)
                     .setAuthor(user.username, user.displayAvatarURL({ format: "png" }));
                 message.channel.send({ embeds: [RegEmbed] });
             }

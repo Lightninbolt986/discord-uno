@@ -15,7 +15,7 @@ export const cards = {
         value: 1,
         count: 2,
         inPlay: 0,
-        image: './node_modules/discord-uno/src/data/assets/cardsred/Red_1.png'
+        image: './node_modules/discord-uno/src/data/assets/cards/red/Red_1.png'
         },
         {
         name: 'Red Two',
