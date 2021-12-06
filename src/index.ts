@@ -89,7 +89,7 @@ export class DiscordUNO {
                 const userOb = message.client.users.cache.get(user.id);
 
                 const Embed = new MessageEmbed()
-                    .setDescription(`Your current hand has ${userHand.length} cards. The cards are\n${userHand.map(data => data.name).join(" | ")}`)
+                    .setDescription(`Your current hand has ${userHand.length} cards. The cards are\n${functions.getWordToNumb(userHand.map(data => data.name).join(" | "))}`)
                     .setColor(this.embedColor)
                     .setAuthor(userOb.username, userOb.displayAvatarURL({ format: "png" }));
                 try {
@@ -163,7 +163,7 @@ export class DiscordUNO {
 
             const Embed = new MessageEmbed()
                 .setColor(this.embedColor)
-                .setDescription(`Your current hand has ${userHand.length} cards. The cards are\n${userHand.map(data => data.name).join(" | ")}`)
+                .setDescription(`Your current hand has ${userHand.length} cards. The cards are\n${functions.getWordToNumb(userHand.map(data => data.name).join(" | "))}`)
                 .setAuthor(message.author.username, message.author.displayAvatarURL({ format: "png" }));
             try {
 
@@ -220,7 +220,7 @@ export class DiscordUNO {
             const userOb = message.client.users.cache.get(user.id);
 
             const Embed = new MessageEmbed()
-                .setDescription(`Your current hand has ${userHand.length} cards. The cards are\n${userHand.map(data => data.name).join(" | ")}`)
+                .setDescription(`Your current hand has ${userHand.length} cards. The cards are\n${functions.getWordToNumb(userHand.map(data => data.name).join(" | "))}`)
                 .setColor(this.embedColor)
                 .setAuthor(userOb.username, userOb.displayAvatarURL({ format: "png" }));
             try {
@@ -350,7 +350,7 @@ export class DiscordUNO {
         const Embed = new MessageEmbed()
             .setColor(this.embedColor)
             .setAuthor(message.author.username, message.author.displayAvatarURL({ format: "png" }))
-            .setDescription(`Your new hand has ${foundGame.users[lastPlayer].hand.length} cards.\n${foundGame.users[lastPlayer].hand.map(crd => crd.name).join(" | ")}`);
+            .setDescription(`Your new hand has ${foundGame.users[lastPlayer].hand.length} cards.\n${functions.getWordToNumb(foundGame.users[lastPlayer].hand.map(crd => crd.name).join(" | "))}`);
         return msg.edit({ embeds: [Embed] });
     }
     /**
@@ -575,7 +575,7 @@ export class DiscordUNO {
                     const channel = <DMChannel>message.client.channels.cache.get(foundGame.users.find(u => u.id === user.id).DM.channelId);
                     const msg = channel.messages.cache.get(foundGame.users.find(u => u.id === user.id).DM.messageId);
                     msg.channel.send(`${user}`).then(m => m.delete());
-                    Embed.setDescription(`Looks like you were called out on 1 card left! You drew 2 cards. Your new hand has ${playerData.hand.length} cards.\n\n${playerData.hand.map(c => c.name).join(" | ")}`);
+                    Embed.setDescription(`Looks like you were called out on 1 card left! You drew 2 cards. Your new hand has ${playerData.hand.length} cards.\n\n${functions.getWordToNumb(playerData.hand.map(c => c.name).join(" | "))}`);
                     msg.edit({ embeds: [Embed] });
                     return message.channel.send(`${user.tag} was called out by ${message.author.tag} on 1 card left! They drew 2 more cards.`);
                 } else {
@@ -584,7 +584,7 @@ export class DiscordUNO {
                     const channel = <DMChannel>message.client.channels.cache.get(foundGame.users.find(u => u.id === user.id).DM.channelId);
                     const msg = channel.messages.cache.get(foundGame.users.find(u => u.id === user.id).DM.messageId);
                     msg.channel.send(`${user}`).then(m => m.delete());
-                    Embed.setDescription(`Oops! Looks like that person didn't have 1 card left! You drew 2 cards. Your new hand has ${authorData.hand.length} cards.\n\n${authorData.hand.map(c => c.name).join(" | ")}`);
+                    Embed.setDescription(`Oops! Looks like that person didn't have 1 card left! You drew 2 cards. Your new hand has ${authorData.hand.length} cards.\n\n${functions.getWordToNumb(authorData.hand.map(c => c.name).join(" | "))}`);
                     msg.edit({ embeds: [Embed] });
                     return message.channel.send(`OOPS! Looks like that person didn't have 1 card left! ${message.author.tag} drew 2 cards!`);
                 }
@@ -675,7 +675,7 @@ export class DiscordUNO {
         const Embed = new MessageEmbed()
             .setColor(this.embedColor)
             .setAuthor(message.author.username, message.author.displayAvatarURL({ format: "png" }))
-            .setDescription(`You drew 1 card. Your new hand has ${foundGame.users.find(u => u.id === message.author.id).hand.length} cards.\n\n${foundGame.users.find(u => u.id === message.author.id).hand.map(c => c.name).join(" | ")}`)
+            .setDescription(`You drew 1 card. Your new hand has ${foundGame.users.find(u => u.id === message.author.id).hand.length} cards.\n\n${functions.getWordToNumb(foundGame.users.find(u => u.id === message.author.id).hand.map(c => c.name).join(" | "))}`)
         return msg.edit({ embeds: [Embed] });
     }
 
@@ -1014,6 +1014,7 @@ export class DiscordUNO {
             const MsgEmbed = new MessageEmbed()
                 .setDescription(`${message.author.tag} played a ${card.name} and switched the color to ${color}. It is now ${message.guild.members.cache.get(data.users[this.nextTurn(data.currentPlayer, "normal", settings, data)].id).user.tag}'s turn`)
                 .setColor(this.embedColor)
+                .setThumbnail(`attachment://e.png`)
                 .setAuthor(message.guild.members.cache.get(data.users[this.nextTurn(data.currentPlayer, "normal", settings, data)].id).user.username, message.guild.members.cache.get(data.users[this.nextTurn(data.currentPlayer, "normal", settings, data)].id).user.displayAvatarURL({ format: "png" }));
             msg.edit({ embeds: [MsgEmbed] });
 
@@ -1100,7 +1101,7 @@ export class DiscordUNO {
                     uChannel.send("Attention.").then(m => m.delete());
 
                     Embed.setAuthor(message.client.users.cache.get(u.id).username, message.client.users.cache.get(u.id).displayAvatarURL({ format: "png" }))
-                        .setDescription(`${message.author} played a ${card.name}. Your new hand has ${u.hand.length} cards.\n\n${u.hand.map(c => c.name).join(" | ")}.`)
+                        .setDescription(`${message.author} played a ${card.name}. Your new hand has ${u.hand.length} cards.\n\n${functions.getWordToNumb(u.hand.map(c => c.name).join(" | "))}.`)
                     uMsg.edit({ embeds: [Embed] });
                 }
 
@@ -1217,7 +1218,7 @@ export class DiscordUNO {
 
             newCards.forEach(c => skippedUser.hand.push(c));
 
-            Embed.setDescription(`${message.author} played a ${card.name}. You drew 2 cards. Your new hand has ${skippedUser.hand.length} cards.\n\n${skippedUser.hand.map(c => c.name).join(" | ")}`)
+            Embed.setDescription(`${message.author} played a ${card.name}. You drew 2 cards. Your new hand has ${skippedUser.hand.length} cards.\n\n${functions.getWordToNumb(skippedUser.hand.map(c => c.name).join(" | "))}`)
                 .setAuthor(message.client.users.cache.get(skippedUser.id).username, message.client.users.cache.get(skippedUser.id).displayAvatarURL({ format: "png" }));
             nextUserMsg.edit({ embeds: [Embed] });
             nextUserChannel.send("Attention.").then(m => m.delete());
