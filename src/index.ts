@@ -310,7 +310,7 @@ export class DiscordUNO {
             let img = new MessageAttachment(cardObject.image, 'e.png')
             const Embed = new MessageEmbed()
                 .setDescription(`${message.client.users.cache.get(foundGame.users[lastPlayer].id).tag} played a ${cardObject.name}. It is now ${message.client.users.cache.get(foundGame.users[foundGame.currentPlayer].id).tag}'s turn.`)
-                .setImage(`attachment://e.png`)
+                .setThumbnail(`attachment://e.png`)
                 .setColor(this.embedColor)
                 .setAuthor(message.client.users.cache.get(foundGame.users[foundGame.currentPlayer].id).username, message.client.users.cache.get(foundGame.users[foundGame.currentPlayer].id).displayAvatarURL({ format: "png" }));
             if (foundGame.users[lastPlayer].hand.length >= 1) message.channel.send({ embeds: [Embed], files: [img] });
@@ -854,7 +854,7 @@ export class DiscordUNO {
                 const ChallEmbed = new MessageEmbed()
                     .setColor(this.embedColor)
 
-                    .setImage(`attachment://e.png`)
+                    .setThumbnail(`attachment://e.png`)
                     .setDescription(`${message.author.tag} has played a Wild Draw Four, ${user}, would you like to challenge this? If they had another card they could have played, they draw 6 instead, otherwise, you draw 6. If you decide not to challenge, you draw the normal 4 cards.`)
                     .setAuthor(user.username, user.displayAvatarURL({ format: "png" }));
 
@@ -971,7 +971,7 @@ export class DiscordUNO {
             const EmMsg = new MessageEmbed()
                 .setDescription(`${message.author}, which color would you like to switch to? \🔴, \🟢, \🔵, or \🟡. You have 30 seconds to respond.`)
                 .setColor(this.embedColor)
-                .setImage(`attachment://e.png`)
+                .setThumbnail(`attachment://e.png`)
                 .setAuthor(message.author.username, message.author.displayAvatarURL({ format: "png" }))
             const msg = await message.channel.send({ embeds: [EmMsg], files: [img] });
 
@@ -1034,7 +1034,7 @@ export class DiscordUNO {
             let img = new MessageAttachment(card.image, 'e.png')
             const MsgEmbed = new MessageEmbed()
 
-                .setImage(`attachment://e.png`)
+                .setThumbnail(`attachment://e.png`)
                 .setDescription(`${message.author.tag} played a ${card.name}. It is now ${message.client.users.cache.get(data.users[this.nextTurn(data.currentPlayer, type, settings, data)].id).tag}'s turn`)
                 .setAuthor(message.client.users.cache.get(data.users[this.nextTurn(data.currentPlayer, type, settings, data)].id).username, message.client.users.cache.get(data.users[this.nextTurn(data.currentPlayer, type, settings, data)].id).displayAvatarURL({ format: "png" }))
                 .setColor(this.embedColor);
@@ -1052,7 +1052,7 @@ export class DiscordUNO {
             let img = new MessageAttachment(card.image, 'e.png')
             const SendEmbed = new MessageEmbed()
 
-                .setImage(`attachment://e.png`)
+                .setThumbnail(`attachment://e.png`)
                 .setDescription(`${message.author.tag} skipped ${message.client.users.cache.get(data.users[this.nextTurn(data.currentPlayer, "normal", settings, data)].id).tag} with a ${card.name}. It is now ${message.client.users.cache.get(data.users[this.nextTurn(data.currentPlayer, "skip", settings, data)].id).tag}'s turn!`)
                 .setAuthor(message.client.users.cache.get(data.users[this.nextTurn(data.currentPlayer, "skip", settings, data)].id).username, message.client.users.cache.get(data.users[this.nextTurn(data.currentPlayer, "skip", settings, data)].id).displayAvatarURL({ format: "png" }))
                 .setColor(this.embedColor);
@@ -1109,7 +1109,7 @@ export class DiscordUNO {
                     .setDescription(`${message.author.tag} played a ${card.name}. Everyone rotated their hand ${settings.reverse ? "counter clock-wise" : "clock-wise"}. It is now ${message.guild.members.cache.get(data.users[this.nextTurn(data.currentPlayer, "normal", settings, data)].id).user.tag}'s turn.`)
                     .setColor(this.embedColor)
 
-                    .setImage(`attachment://e.png`)
+                    .setThumbnail(`attachment://e.png`)
                     .setAuthor(message.guild.members.cache.get(data.users[this.nextTurn(data.currentPlayer, "normal", settings, data)].id).user.username, message.guild.members.cache.get(data.users[this.nextTurn(data.currentPlayer, "normal", settings, data)].id).user.displayAvatarURL({ format: "png" }));
                 message.channel.send({ embeds: [SendMessage], files: [img] });
             }
@@ -1152,7 +1152,7 @@ export class DiscordUNO {
                     .setColor(this.embedColor)
                     .setAuthor(message.author.username, message.author.displayAvatarURL({ format: "png" }))
 
-                    .setImage(`attachment://e.png`)
+                    .setThumbnail(`attachment://e.png`)
                 const msg = await message.channel.send({ embeds: [EmbedMsg], files: [img] });
 
                 const filter = (reaction: MessageReaction, user: User) => reactions.includes(reaction.emoji.name) && message.author.id === user.id;
@@ -1203,7 +1203,7 @@ export class DiscordUNO {
                 userMsg.edit({ embeds: [Embed] });
 
                 EmbedMsg.setDescription(`${message.author} swapped hands with ${user}! It is now ${message.client.users.cache.get(data.users[this.nextTurn(data.currentPlayer, "normal", settings, data)].id)}'s turn!`)
-                    .setImage(`attachment://e.png`)
+                    .setThumbnail(`attachment://e.png`)
                     .setAuthor(message.client.users.cache.get(data.users[this.nextTurn(data.currentPlayer, "normal", settings, data)].id).username, message.client.users.cache.get(data.users[this.nextTurn(data.currentPlayer, "normal", settings, data)].id).displayAvatarURL({ format: "png" }));
                 msg.edit({ embeds: [EmbedMsg], files: [img] }).then(m => m.reactions.removeAll());
             }
@@ -1227,7 +1227,7 @@ export class DiscordUNO {
                 .setAuthor(message.client.users.cache.get(data.users[this.nextTurn(data.currentPlayer, "skip", settings, data)].id).username, message.client.users.cache.get(data.users[this.nextTurn(data.currentPlayer, "skip", settings, data)].id).displayAvatarURL({ format: "png" }))
                 .setColor(this.embedColor)
 
-                .setImage(`attachment://e.png`)
+                .setThumbnail(`attachment://e.png`)
                 .setDescription(`${message.author.tag} played a ${card.name} on ${message.client.users.cache.get(skippedUser.id).tag}. They drew two cards and it is now ${message.client.users.cache.get(data.users[this.nextTurn(data.currentPlayer, "skip", settings, data)].id).tag}'s turn!`)
             message.channel.send({ embeds: [SendEmbed], files: [img] });
 
