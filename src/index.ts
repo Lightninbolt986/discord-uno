@@ -312,7 +312,7 @@ let img = new MessageAttachment(foundGame.topCard.image, 'e.png')
             this.storage.set(message.channel.id, foundGame);
             let img = new MessageAttachment(cardObject.image, 'e.png')
             const Embed = new MessageEmbed()
-                .setDescription(`${message.client.users.cache.get(foundGame.users[lastPlayer].id).tag} played a ${cardObject.name}. It is now ${message.client.users.cache.get(foundGame.users[foundGame.currentPlayer].id).tag}'s turn.`)
+                .setDescription(`${message.client.users.cache.get(foundGame.users[lastPlayer].id).tag} played a ${cardObject.name}. \nIt is now ${message.client.users.cache.get(foundGame.users[foundGame.currentPlayer].id).tag}'s turn.`)
                 .setThumbnail(`attachment://e.png`)
                 .setColor(this.embedColor)
                 .setAuthor(message.client.users.cache.get(foundGame.users[foundGame.currentPlayer].id).username, message.client.users.cache.get(foundGame.users[foundGame.currentPlayer].id).displayAvatarURL({ format: "png" }));
@@ -331,7 +331,7 @@ let img = new MessageAttachment(foundGame.topCard.image, 'e.png')
                 const Embed = new MessageEmbed()
                     .setAuthor(message.author.username, message.author.displayAvatarURL({ format: "png" }))
                     .setColor(this.embedColor)
-                    .setDescription(`${message.author} went out with 0 cards! It is now ${message.client.users.cache.get(foundGame.users[foundGame.currentPlayer].id).tag}'s turn!`);
+                    .setDescription(`${message.author} went out with 0 cards! \nIt is now ${message.client.users.cache.get(foundGame.users[foundGame.currentPlayer].id).tag}'s turn!`);
                 if (foundGame.users.length > 1) return message.channel.send({ embeds: [Embed] });
                 else {
                     winners.push({ id: foundGame.users[i].id });
@@ -641,10 +641,7 @@ let img = new MessageAttachment(foundGame.topCard.image, 'e.png')
         if (!foundGame.active) return message.channel.send("You can't draw cards from a game that hasn't started yet!");
         if (foundGame.users[foundGame.currentPlayer].id !== message.author.id) return message.channel.send("You can't draw cards yet! It isn't your turn.");
 
-        const beforeCondition = foundGame.users[foundGame.currentPlayer].hand.find(c => c.color === foundGame.topCard.color)
-            || foundGame.users[foundGame.currentPlayer].hand.find(c => c.value === foundGame.topCard.value)
-            || foundGame.users[foundGame.currentPlayer].hand.find(c => c.value === "null");
-
+        const beforeCondition = false
         if (beforeCondition) return message.channel.send("You already have a card in your hand that you can play! Try playing that instead.");
 
         const newCard = this.createCards(message, 1, false);
@@ -656,13 +653,10 @@ let img = new MessageAttachment(foundGame.topCard.image, 'e.png')
         const author = message.author;
         const nextUser = message.client.users.cache.get(foundGame.users[this.nextTurn(foundGame.currentPlayer, "normal", foundSettings, foundGame)].id);
 
-        const condition = foundGame.users[foundGame.currentPlayer].hand.find(c => c.color === foundGame.topCard.color)
-            || foundGame.users[foundGame.currentPlayer].hand.find(c => c.value === foundGame.topCard.value)
-            || foundGame.users[foundGame.currentPlayer].hand.find(c => c.value === "null");
-
+        const condition = false
         const DrawEmbed = new MessageEmbed()
             .setColor(this.embedColor)
-            .setDescription(`${message.author}, you drew 1 card! Check your DM's for your new hand.${!condition ? ` ${message.author.username} couldn't play a card. It is now ${message.client.users.cache.get(foundGame.users[this.nextTurn(foundGame.currentPlayer, "normal", foundSettings, foundGame)].id).username}'s turn.` : " "}`)
+            .setDescription(`${message.author}, you drew 1 card! Check your DM's for your new hand. \nIt is now ${message.client.users.cache.get(foundGame.users[this.nextTurn(foundGame.currentPlayer, "normal", foundSettings, foundGame)].id).username}'s turn.`)
             .setAuthor(!condition ? nextUser.username : author.username, !condition ? nextUser.displayAvatarURL({ format: "png" }) : author.displayAvatarURL({ format: "png" }));
         message.channel.send({ embeds: [DrawEmbed] });
 
@@ -900,7 +894,7 @@ let img = new MessageAttachment(foundGame.topCard.image, 'e.png')
                         authorMsg.edit({ embeds: [Embed] });
                         authorMsg.channel.send("Attention.").then(m => m.delete());
 
-                        ChallEmbed.setDescription(`${message.author.tag} just played a ${card.name} on ${challenger.tag} and lost the challege! ${challenged.tag} drew 6 cards. It is now ${challenger.tag}'s turn!`)
+                        ChallEmbed.setDescription(`${message.author.tag} just played a ${card.name} on ${challenger.tag} and lost the challege! ${challenged.tag} drew 6 cards. \nIt is now ${challenger.tag}'s turn!`)
 
                             .setThumbnail(`attachment://e.png`)
                         msg.edit({ embeds: [ChallEmbed] });
@@ -919,7 +913,7 @@ let img = new MessageAttachment(foundGame.topCard.image, 'e.png')
                         nextUserMsg.edit({ embeds: [Embed] });
                         nextUserMsg.channel.send("Attention.").then(m => m.delete());
 
-                        ChallEmbed.setDescription(`${message.author.tag} just played a ${card.name} on ${challenger.tag} and won the challenge! ${challenger.tag} drew 6 cards. It is now ${nextTurnUser.tag}'s turn!`)
+                        ChallEmbed.setDescription(`${message.author.tag} just played a ${card.name} on ${challenger.tag} and won the challenge! ${challenger.tag} drew 6 cards. \nIt is now ${nextTurnUser.tag}'s turn!`)
 
                             .setThumbnail(`attachment://e.png`)
                         msg.edit({ embeds: [ChallEmbed] });
@@ -939,7 +933,7 @@ let img = new MessageAttachment(foundGame.topCard.image, 'e.png')
                     nextUserMsg.edit({ embeds: [Embed] });
                     nextUserMsg.channel.send(`${userToSend}`).then(m => m.delete());
 
-                    ChallEmbed.setDescription(`${message.author.tag} just played a ${card.name} on ${challenger.tag}. ${challenger.tag} decided not to challenge... They drew 4 cards and it is now ${nextTurnUser.tag}'s turn.`)
+                    ChallEmbed.setDescription(`${message.author.tag} just played a ${card.name} on ${challenger.tag}. ${challenger.tag} decided not to challenge... \nThey drew 4 cards and it is now ${nextTurnUser.tag}'s turn.`)
                     
                     .setThumbnail(`attachment://e.png`)
                     msg.edit({ embeds: [ChallEmbed] });
@@ -962,7 +956,7 @@ let img = new MessageAttachment(foundGame.topCard.image, 'e.png')
                 nextUserMsg.channel.send(`${userToSend}`).then(m => m.delete());
                 let img = new MessageAttachment(card.image, 'e.png')
                 const RegEmbed = new MessageEmbed()
-                    .setDescription(`${message.author.tag} just played a ${card.name} on ${userToSend.tag} and ${userToSend.tag} drew 4 cards. It is now ${nextTurnUser.tag}'s turn.`)
+                    .setDescription(`${message.author.tag} just played a ${card.name} on ${userToSend.tag} and ${userToSend.tag} drew 4 cards. \nIt is now ${nextTurnUser.tag}'s turn.`)
                     .setColor(this.embedColor)
                     
                     .setThumbnail(`attachment://e.png`)
@@ -1022,7 +1016,7 @@ let img = new MessageAttachment(foundGame.topCard.image, 'e.png')
             authorMsg.channel.send("Attention.").then(m => m.delete());
 
             const MsgEmbed = new MessageEmbed()
-                .setDescription(`${message.author.tag} played a ${card.name} and switched the color to ${color}. It is now ${message.guild.members.cache.get(data.users[this.nextTurn(data.currentPlayer, "normal", settings, data)].id).user.tag}'s turn`)
+                .setDescription(`${message.author.tag} played a ${card.name} and switched the color to ${color}. \nIt is now ${message.guild.members.cache.get(data.users[this.nextTurn(data.currentPlayer, "normal", settings, data)].id).user.tag}'s turn`)
                 .setColor(this.embedColor)
                 .setThumbnail(`attachment://e.png`)
                 .setAuthor(message.guild.members.cache.get(data.users[this.nextTurn(data.currentPlayer, "normal", settings, data)].id).user.username, message.guild.members.cache.get(data.users[this.nextTurn(data.currentPlayer, "normal", settings, data)].id).user.displayAvatarURL({ format: "png" }));
@@ -1046,7 +1040,7 @@ let img = new MessageAttachment(foundGame.topCard.image, 'e.png')
             const MsgEmbed = new MessageEmbed()
 
                 .setThumbnail(`attachment://e.png`)
-                .setDescription(`${message.author.tag} played a ${card.name}. It is now ${message.client.users.cache.get(data.users[this.nextTurn(data.currentPlayer, type, settings, data)].id).tag}'s turn`)
+                .setDescription(`${message.author.tag} played a ${card.name}. \nIt is now ${message.client.users.cache.get(data.users[this.nextTurn(data.currentPlayer, type, settings, data)].id).tag}'s turn`)
                 .setAuthor(message.client.users.cache.get(data.users[this.nextTurn(data.currentPlayer, type, settings, data)].id).username, message.client.users.cache.get(data.users[this.nextTurn(data.currentPlayer, type, settings, data)].id).displayAvatarURL({ format: "png" }))
                 .setColor(this.embedColor);
             message.channel.send({ embeds: [MsgEmbed], files: [img] });
@@ -1064,7 +1058,7 @@ let img = new MessageAttachment(foundGame.topCard.image, 'e.png')
             const SendEmbed = new MessageEmbed()
 
                 .setThumbnail(`attachment://e.png`)
-                .setDescription(`${message.author.tag} skipped ${message.client.users.cache.get(data.users[this.nextTurn(data.currentPlayer, "normal", settings, data)].id).tag} with a ${card.name}. It is now ${message.client.users.cache.get(data.users[this.nextTurn(data.currentPlayer, "skip", settings, data)].id).tag}'s turn!`)
+                .setDescription(`${message.author.tag} skipped ${message.client.users.cache.get(data.users[this.nextTurn(data.currentPlayer, "normal", settings, data)].id).tag} with a ${card.name}. \nIt is now ${message.client.users.cache.get(data.users[this.nextTurn(data.currentPlayer, "skip", settings, data)].id).tag}'s turn!`)
                 .setAuthor(message.client.users.cache.get(data.users[this.nextTurn(data.currentPlayer, "skip", settings, data)].id).username, message.client.users.cache.get(data.users[this.nextTurn(data.currentPlayer, "skip", settings, data)].id).displayAvatarURL({ format: "png" }))
                 .setColor(this.embedColor);
             message.channel.send({ embeds: [SendEmbed], files: [img] });
@@ -1117,7 +1111,7 @@ let img = new MessageAttachment(foundGame.topCard.image, 'e.png')
 
                 let img = new MessageAttachment(card.image, 'e.png')
                 const SendMessage = new MessageEmbed()
-                    .setDescription(`${message.author.tag} played a ${card.name}. Everyone rotated their hand ${settings.reverse ? "counter clock-wise" : "clock-wise"}. It is now ${message.guild.members.cache.get(data.users[this.nextTurn(data.currentPlayer, "normal", settings, data)].id).user.tag}'s turn.`)
+                    .setDescription(`${message.author.tag} played a ${card.name}. Everyone rotated their hand ${settings.reverse ? "counter clock-wise" : "clock-wise"}. \nIt is now ${message.guild.members.cache.get(data.users[this.nextTurn(data.currentPlayer, "normal", settings, data)].id).user.tag}'s turn.`)
                     .setColor(this.embedColor)
 
                     .setThumbnail(`attachment://e.png`)
@@ -1213,7 +1207,7 @@ let img = new MessageAttachment(foundGame.topCard.image, 'e.png')
                 userChannel.send("Attention.").then(m => m.delete());
                 userMsg.edit({ embeds: [Embed] });
 
-                EmbedMsg.setDescription(`${message.author} swapped hands with ${user}! It is now ${message.client.users.cache.get(data.users[this.nextTurn(data.currentPlayer, "normal", settings, data)].id)}'s turn!`)
+                EmbedMsg.setDescription(`${message.author} swapped hands with ${user}! \nIt is now ${message.client.users.cache.get(data.users[this.nextTurn(data.currentPlayer, "normal", settings, data)].id)}'s turn!`)
                     .setThumbnail(`attachment://e.png`)
                     .setAuthor(message.client.users.cache.get(data.users[this.nextTurn(data.currentPlayer, "normal", settings, data)].id).username, message.client.users.cache.get(data.users[this.nextTurn(data.currentPlayer, "normal", settings, data)].id).displayAvatarURL({ format: "png" }));
                 msg.edit({ embeds: [EmbedMsg], files: [img] }).then(m => m.reactions.removeAll());
@@ -1239,7 +1233,7 @@ let img = new MessageAttachment(foundGame.topCard.image, 'e.png')
                 .setColor(this.embedColor)
 
                 .setThumbnail(`attachment://e.png`)
-                .setDescription(`${message.author.tag} played a ${card.name} on ${message.client.users.cache.get(skippedUser.id).tag}. They drew two cards and it is now ${message.client.users.cache.get(data.users[this.nextTurn(data.currentPlayer, "skip", settings, data)].id).tag}'s turn!`)
+                .setDescription(`${message.author.tag} played a ${card.name} on ${message.client.users.cache.get(skippedUser.id).tag}. \nThey drew two cards and it is now ${message.client.users.cache.get(data.users[this.nextTurn(data.currentPlayer, "skip", settings, data)].id).tag}'s turn!`)
             message.channel.send({ embeds: [SendEmbed], files: [img] });
 
         }
