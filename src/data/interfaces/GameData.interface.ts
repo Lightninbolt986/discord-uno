@@ -10,4 +10,5 @@ export default interface GameData {
     users: User[];
     topCard: Card;
     currentPlayer: number;
+    startedAt:number
 }
