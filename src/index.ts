@@ -131,7 +131,7 @@ export class DiscordUNO {
 
         if (!foundGame.users.some(data => data.id === message.author.id)) return message.channel.send("You can't leave a game that you haven't joined.");
         if (foundGame.creator === message.author.id) return message.channel.send("You can't leave your own game. Try ending the game instead.");
-
+        if(foundGame.users[foundGame.currentPlayer].id === message.author.id)return message.channel.send('You can\'t leave when its your turn.')
         const msg = await message.channel.send(`${message.author}, are you sure you want to leave the game?`);
         await Promise.all([msg.react("✅"), msg.react("❌")]);
 
@@ -157,11 +157,11 @@ export class DiscordUNO {
         if (!foundGame) return message.channel.send("There is no game to kick someone from, try creating one instead!");
         const toBeKicked = message?.mentions?.members?.first()
         if (!toBeKicked) return message.channel.send('You need to mention someone to kick')
-        if ((message.author.id !== foundGame.creator) || message.member.permissions.has('ADMINISTRATOR')) return message.channel.send("You need to be the game's creator/have admin permissions to kick someone")
+        if ((message.author.id !== foundGame.creator) && !message.member.permissions.has('ADMINISTRATOR')) return message.channel.send("You need to be the game's creator/have admin permissions to kick someone")
         if (!foundGame.users.some(data => data.id === toBeKicked.id)) return message.channel.send("You can't kick a user that hasn't joined.");
         if (foundGame.creator === toBeKicked.id) return message.channel.send("You can't kick the creator of the game.");
         if (message.author.id === toBeKicked.id) return message.channel.send("You can't kick youreself out of the game. Try leaving instead");
-
+        if(foundGame.users[foundGame.currentPlayer].id === toBeKicked.id)return message.channel.send('You can\'t kick someone when its their turn.')
         const msg = await message.channel.send(`${message.author}, are you sure you want to kick this person?`);
         await Promise.all([msg.react("✅"), msg.react("❌")]);
 
